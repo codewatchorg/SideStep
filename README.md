@@ -31,7 +31,7 @@ If using the defaults, then a source file will be generated in the .\source dire
 peCloak Modifications
 =====================
 
-If you want to use peCloak in the last step of the executable creation, then you will need to install the pydasm and pefile Python modules.  You will also need to download the SectionDoubleP Python module and save it to the peCloak directory.
+If you want to use peCloak in the last step of the executable creation, then you will need to install the pydasm and pefile Python modules.  You will also need to download the SectionDoubleP Python module (found here: http://git.n0p.cc/?p=SectionDoubleP.git;a=blob_plain;f=SectionDoubleP.py;h=93717cdd0ac293548fb995a1c54094dbea6005d9;hb=8846697ecda15bc814f99d24f7f5cbf0e06466d0) and save it to the peCloak directory.
 
 Next, you need to make the modifications to pefile that the author of peCloak references on his page.  If pefile was installed as an egg file:
 <ol>
