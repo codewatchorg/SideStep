@@ -73,6 +73,11 @@ def main(argv):
   # Set the command line values
   sourceFile = open(settings.sourceDir + '/' + args['file'], 'w')
 
+  # Set DH parameter size
+  dhLen = 1024
+  if settings.dhSize == 2:
+    dhLen = 2048
+
   execFuncVar = rng.genFunc(settings.randomFuncSize)
   execParamVar = rng.genVar(settings.randomVarSize)
   aesPayloadVar = rng.genVar(settings.randomVarSize)
@@ -126,7 +131,7 @@ def main(argv):
   src += codesegments.randVarsAndData(settings.paddingVars, lambda: rng.genVar(settings.randomVarSize), lambda: rng.genData(settings.dataLen)) + "\n"
   src += "std::string " + aesPayloadVar + " = \"" + encPayload + "\";\n"
   src += "int " + virtAllocFuncVar + "(std::string " + virtAllocFuncParam + ");\n"
-  src += codesegments.delayTime(heuristicFuncVar, settings.heuristicTimerVar, settings.diffieDelay, diffieFuncVar, curTimeVar, diffieDh, diffieRnd, diffieBits, diffieCount, diffieP, diffieQ, diffieG, diffieV, diffieE, diffieMsg1, diffieMsg2) + "\n"
+  src += codesegments.delayTime(heuristicFuncVar, settings.heuristicTimerVar, settings.diffieDelay, diffieFuncVar, curTimeVar, diffieDh, dhLen, diffieRnd, diffieBits, diffieCount, diffieP, diffieQ, diffieG, diffieV, diffieE, diffieMsg1, diffieMsg2) + "\n"
   src += codesegments.mainStub(mainSt, heuristicFuncVar, mainDecrypted, mainEncodeKey, encKey, mainEncodeIv, encIv, mainDecodeCipher, mainFuncPayload, aesPayloadVar, mainAesDecryption, mainCbcDecryption, mainStfDecryptor, virtAllocFuncVar) + "\n"
   src += codesegments.virtualAllocStub(virtAllocFuncVar, virtAllocFuncParam, virtAllocLen, virtAllocPid, virtAllocCode, virtAllocAddr, virtAllocPage_size, execFuncVar, execParamVar) + "\n"
 

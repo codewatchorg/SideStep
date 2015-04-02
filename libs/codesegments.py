@@ -60,14 +60,14 @@ def randVarsAndData(paddingVars, genVar, genData):
   return paddingPayload
 
 # Create timer function without sleep
-def delayTime(heuristicFunc, heuristicTimer, diffieDelay, diffieFunc, currentTime, dh, rnd, bits, count, p, q, g, v, e, msg1, msg2):
+def delayTime(heuristicFunc, heuristicTimer, diffieDelay, diffieFunc, currentTime, dh, dhSize, rnd, bits, count, p, q, g, v, e, msg1, msg2):
   diffieAddition = ""
 
   if diffieDelay == 1:
     diffieAddition = ("""void %(diffieFunc)s()
 {
     AutoSeededRandomPool %(rnd)s;
-    unsigned int %(bits)s = 1024;
+    unsigned int %(bits)s = %(dhSize)s;
 
     try
     {

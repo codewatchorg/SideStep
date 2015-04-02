@@ -51,6 +51,7 @@ SideStep generates Meterpreter shellcode, randomly generates an encryption key, 
 
 In addition, to encrypting the shellcode and assigning random names, it also generates a configurable number of random variables with configurable value lengths.  Surprisingly, this can also help evade AV (read this: https://github.com/nccgroup/metasploitavevasion).
 
+
 SideStep can also be configured to strip debugging and other symbol information from the final executable and then randomly encode the assembly instructions using peCloak.
 
 Future

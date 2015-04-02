@@ -36,6 +36,9 @@ msfvenom = 'msfvenom'
 # Enable DH generation to add additional delay for sandbox bypass
 diffieDelay = 1
 
+# DH parameter size - 1 for 1024bit, 2 for 2048
+dhSize = 1
+
 # Directory for source code generation
 sourceDir = 'source'
 
