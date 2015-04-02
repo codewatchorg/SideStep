@@ -12,6 +12,7 @@ Ruby 2.x<BR>
 Windows (7 or 8 should work)<BR>
 Python 2.7.x<BR>
 Visual Studio (free editions should be fine)<BR>
+Windows SDK<BR>
 Cygwin with strip utility (if you want to strip debug symbols)<BR>
 peCloak (f you want to use it - http://www.securitysift.com/pecloak-py-an-experiment-in-av-evasion/)<BR>
 
