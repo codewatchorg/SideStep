@@ -34,11 +34,13 @@ peCloak Modifications
 If you want to use peCloak in the last step of the executable creation, then you will need to install the pydasm and pefile Python modules.  You will also need to download the SectionDoubleP Python module and save it to the peCloak directory.
 
 Next, you need to make the modifications to pefile that the author of peCloak references on his page.  If pefile was installed as an egg file:
-1) Find the egg file, typically in PythonRootDir\Lib\site-packages
-2) Make a copy of the egg file and rename the extension to .zip
-3) Unzip somewhere and rename the folder to the original name, but add .egg.  So if the egg file was named pefile-1.2.10_139-py2.7.egg, then make that the directory name.
-4) Make the necessary changes to pefile.py and remove pefile.pyc
-5) Copy the unzipped folder containing the modified pefile.py back to the PythonRootDir\Lib\site-packages directory and remove the .egg file.
+<ol>
+<li>Find the egg file, typically in PythonRootDir\Lib\site-packages</li>
+<li>Make a copy of the egg file and rename the extension to .zip</li>
+<li>Unzip somewhere and rename the folder to the original name, but add .egg.  So if the egg file was named pefile-1.2.10_139-py2.7.egg, then make that the directory name.</li>
+<li>Make the necessary changes to pefile.py and remove pefile.pyc</li>
+<li>Copy the unzipped folder containing the modified pefile.py back to the PythonRootDir\Lib\site-packages directory and remove the .egg file.</li>
+</ol>
 
 If it is installed as an editable Python package, then just find and edit the pefile.py as shown in the peCloak demonstration.
 
