@@ -3,6 +3,8 @@ SideStep
 
 SideStep is yet another tool to bypass anti-virus software.  The tool generates Metasploit payloads encrypted using the CryptoPP library (license included), and uses several other techniques to evade AV.
 
+Additional information can be found here: https://www.codewatch.org/blog/?p=415.
+
 Requirements
 ============
 
