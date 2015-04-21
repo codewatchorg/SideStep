@@ -8,12 +8,12 @@ Github:         https://github.com/codewatchorg/sidestep
 Description:    SideStep is yet another tool to bypass anti-virus software.  The tool generates Metasploit payloads encrypted using the CryptoPP library (license included), and uses several other techniques to evade AV.
 
 Software Requirements:
-Metasploit Community 4.11.1 - Update 2015031001 (or later)<BR>
-Ruby 2.x<BR>
-Windows (7 or 8 should work)<BR>
-Python 2.7.x<BR>
-Visual Studio (free editions should be fine)<BR>
-Cygwin with strip utility (if you want to strip debug symbols)<BR>
+Metasploit Community 4.11.1 - Update 2015031001 (or later)
+Ruby 2.x
+Windows (7 or 8 should work)
+Python 2.7.x
+Visual Studio (free editions should be fine)
+Cygwin with strip utility (if you want to strip debug symbols)
 
 Configuration Requirements:
 Ruby, Python, strip.exe (if using it), and the cl.exe tool from Visual Studio need to be in your path.  Sorry, I tried to make it compile with ming-gcc with no luck.
