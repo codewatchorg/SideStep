@@ -49,7 +49,13 @@ cryptLibPath = 'source\\cryptlib.lib'
 exeDir = 'exe'
 
 # Visual Studio path
-vsPath = 'C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC'
+vsPath = 'C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC'
 
 # Windows SDK path
-sdkPath = 'C:\\Program Files\\Microsoft SDKs\\Windows\\v6.0A'
+sdkPath = 'C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A'
+
+# Windows Kit Include path
+kitPathIncl = 'C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10240.0\\ucrt'
+
+# Windows Kit Lib path
+kitPathLib = 'C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10240.0\\ucrt\\x86'

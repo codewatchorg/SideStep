@@ -1,6 +1,6 @@
 """
 Name:           SideStep
-Version:        0.1.0
+Version:        0.1.1
 Date:           3/30/2015
 Author:         Josh Berry - josh.berry@codewatch.org
 Github:         https://github.com/codewatchorg/sidestep
@@ -8,12 +8,12 @@ Github:         https://github.com/codewatchorg/sidestep
 Description:    SideStep is yet another tool to bypass anti-virus software.  The tool generates Metasploit payloads encrypted using the CryptoPP library (license included), and uses several other techniques to evade AV.
 
 Software Requirements:
-Metasploit Community 4.11.1 - Update 2015031001 (or later)
-Ruby 2.x
-Windows (7 or 8 should work)
-Python 2.7.x
-Visual Studio (free editions should be fine)
-Cygwin with strip utility (if you want to strip debug symbols)
+Metasploit Community 4.11.1 - Update 2015031001 (or later)<BR>
+Ruby 2.x<BR>
+Windows (Tested on 7, 8, and 10)<BR>
+Python 2.7.x<BR>
+Visual Studio (free editions should be fine - tested on 2012 and 2015)<BR>
+Cygwin with strip utility (if you want to strip debug symbols)<BR>
 
 Configuration Requirements:
 Ruby, Python, strip.exe (if using it), and the cl.exe tool from Visual Studio need to be in your path.  Sorry, I tried to make it compile with ming-gcc with no luck.
@@ -72,8 +72,8 @@ def main(argv):
 
   ip = args['ip']
   port = args['port']
-  clOptions = '/GS /GL /analyze- /Zc:wchar_t /Zi /Gm /O2 /sdl /fp:precise /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT /EHsc /Fe"' + settings.exeDir + path_delim + args['exe'] + '" /Fo"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '.obj " /Fd"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '" /nologo /I"' + settings.vsPath + path_delim + 'include" /I"' + settings.vsPath + path_delim + 'atlmfc' + path_delim + 'include" /I"' + settings.sdkPath + path_delim + 'Include" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'AdvAPI32.Lib" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'Uuid.Lib" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'Kernel32.Lib" ' + settings.cryptLibPath + ' ' + settings.sourceDir + path_delim + args['file']
-
+  clOptions = '/GS /GL /analyze- /Zc:wchar_t /Zi /Gm /O2 /sdl /fp:precise /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT /EHsc /Fe"' + settings.exeDir + path_delim + args['exe'] + '" /Fo"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '.obj" /Fd"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '" /nologo /I"' + settings.vsPath + path_delim + 'include" /I"' + settings.vsPath + path_delim + 'atlmfc' + path_delim + 'include" /I"' + settings.sdkPath + path_delim + 'Include" /I"' + settings.kitPathIncl + '" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'AdvAPI32.Lib" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'Uuid.Lib" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'Kernel32.Lib" "' + settings.kitPathLib + path_delim + 'libucrt.lib" ' + settings.cryptLibPath + ' ' + settings.sourceDir + path_delim + args['file']
+  
   print '[+]  Preparing to create a Meterpreter executable'
 
   # Set the command line values
