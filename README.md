@@ -16,10 +16,14 @@ Python 2.7.x<BR>
 Visual Studio (free editions should be fine - tested on 2012 and 2015)<BR>
 Windows SDK<BR>
 Cygwin with strip utility (if you want to strip debug symbols)<BR>
-peCloak (f you want to use it - http://www.securitysift.com/pecloak-py-an-experiment-in-av-evasion/)<BR><BR>
+peCloak (f you want to use it - http://www.securitysift.com/pecloak-py-an-experiment-in-av-evasion/)<BR>
+Ditto (if you want to use it - https://github.com/mubix/ditto)
+Mono (if you want to sign the executable - http://www.mono-project.com/download/)<BR><BR>
+
+For code signing, a good example can be found here: https://developer.mozilla.org/en-US/docs/Signing_an_executable_with_Authenticode<BR><BR>
 
 Configuration:
-Ruby, Python, strip.exe (if using it), and the cl.exe tool from Visual Studio need to be in your path.  Sorry, I tried to make it compile with ming-gcc with no luck.<BR><BR>
+Ruby, Python, strip.exe (if using it), and the cl.exe tool from Visual Studio need to be in your path.  Sorry, I tried to make it compile with mingw-gcc with no luck.<BR><BR>
 ** You will almost certainly have to compile the CryptoPP library with your own copy of Visual Studio.  This is not my area of expertise, so I am currently looking at ways to build this in **
 
 Usage
