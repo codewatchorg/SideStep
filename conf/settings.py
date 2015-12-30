@@ -1,9 +1,20 @@
 # Use strip.exe to remove debugging symbols
-useStrip = 1
+useStrip = 0
 
 # Use peCloak to perform additional encoding on the binary
-usePeCloak = 1
+usePeCloak = 0
 peCloakPath = 'C:\\Tools\\peCloak\\'
+
+# Use ditto to copy details and icon from another exe into the binary
+useDitto = 0
+dittoPath = 'C:\\Tools\\ditto\\'
+dittoExe = 'C:\\Windows\\system32\\setupugc.exe'
+
+# Sign the executable with Mono's signcode
+useSigncode = 0
+signcodePath = 'C:\\Program Files (x86)\\Mono\\lib\\mono\\4.5\\signcode.exe'
+certPVK = 'C:\\Tools\\openssl\\codesign.pvk'
+certSPC = 'C:\\Tools\\openssl\\codespc.spc'
 
 # Size of randomly generated variables
 randomVarSize = 10

