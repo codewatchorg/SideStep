@@ -23,7 +23,7 @@ Mono (if you want to sign the executable - http://www.mono-project.com/download/
 For code signing, a good example can be found here: https://developer.mozilla.org/en-US/docs/Signing_an_executable_with_Authenticode<BR>
 
 Configuration:
-Ruby, Python, strip.exe (if using it), and the cl.exe tool from Visual Studio need to be in your path.  Sorry, I tried to make it compile with mingw-gcc with no luck.<BR>
+Ruby, Python, strip.exe (if using it), and the cl.exe and lib.exe tools from Visual Studio need to be in your path.  Sorry, I tried to make it compile with mingw-gcc with no luck.<BR>
 
 *** The tool should now autocompile the cryptopp library ***
 
