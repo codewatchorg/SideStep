@@ -179,8 +179,14 @@ def main(argv):
         os.rename(os.getcwd() + path_delim + settings.exeDir + path_delim + file, os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'])
 
   if settings.useSigncode == 1:
-    print '[-]\tSigning executable with certificate at ' + settings.certPVK
-    subprocess.Popen(settings.signcodePath + ' -spc ' + settings.certSPC + ' -v ' + settings.certPVK + ' -a sha1 -$ commercial ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+  # Disabled for now as Mono doesn't support signing with SHA-256 or greater
+  #  print '[-]\tSigning executable with certificate at ' + settings.certPVK
+  #  subprocess.Popen(settings.signcodePath + ' -spc ' + settings.certSPC + ' -v ' + settings.certPVK + ' -a sha1 -$ commercial ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+
+    # Sign with Microsoft's signtool
+    print '[-]\tSigning executable with certificate at ' + settings.signCert
+    subprocess.Popen(settings.signcodePath + ' sign /f ' + settings.signCert + ' /fd ' + settings.signHash + ' /n ' + settings.signSubject + ' ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+
     time.sleep(3)
 
   print '[*]  Process complete!'

@@ -10,11 +10,18 @@ useDitto = 0
 dittoPath = 'C:\\Tools\\ditto\\'
 dittoExe = 'C:\\Windows\\system32\\setupugc.exe'
 
-# Sign the executable with Mono's signcode
+# Disabled due to lack of SHA-256 support Sign the executable with Mono's signcode
+#useSigncode = 0
+#signcodePath = 'C:\\Program Files (x86)\\Mono\\lib\\mono\\4.5\\signcode.exe'
+#certPVK = 'C:\\Tools\\openssl\\codesign.pvk'
+#certSPC = 'C:\\Tools\\openssl\\codespc.spc'
+
+# Sign the executable with Microsoft's signtool
 useSigncode = 0
-signcodePath = 'C:\\Program Files (x86)\\Mono\\lib\\mono\\4.5\\signcode.exe'
-certPVK = 'C:\\Tools\\openssl\\codesign.pvk'
-certSPC = 'C:\\Tools\\openssl\\codespc.spc'
+signcodePath = 'C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x86\\signtool.exe'
+signSubject = 'Microsoft'
+signHash = 'sha256'
+signCert = 'C:\\Tools\\openssl\\codesign.pfx'
 
 # Size of randomly generated variables
 randomVarSize = 10
