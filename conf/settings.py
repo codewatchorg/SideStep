@@ -45,6 +45,12 @@ heuristicTimerVar = 120
 # Metasploit Meterpreter payload
 msfmeterpreter = 'windows/meterpreter/reverse_https'
 
+# Payload execution options
+MsfOptions = {
+  'PrependMigrate': 'true',
+  'PrependMigrateProc': 'svchost.exe'
+}
+
 # Path to Metasploit Meterpreter payload generator
 msfpath = 'c:/metasploit/apps/pro/msf3/'
 
