@@ -23,6 +23,12 @@ signSubject = 'Microsoft'
 signHash = 'sha256'
 signCert = 'C:\\Tools\\openssl\\codesign.pfx'
 
+# Steal a signature with SigThief
+useSigThief = 0
+sigThiefPath = 'C:\\Tools\\SigThief\\'
+sigThiefExe = 'C:\\Windows\\explorer.exe'
+sigThiefExeName = 'explorer.exe'
+
 # Size of randomly generated variables
 randomVarSize = 10
 

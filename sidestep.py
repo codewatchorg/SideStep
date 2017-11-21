@@ -1,6 +1,6 @@
 """
 Name:           SideStep
-Version:        0.5.0
+Version:        0.6.1
 Date:           3/30/2015
 Author:         Josh Berry - josh.berry@codewatch.org
 Github:         https://github.com/codewatchorg/sidestep
@@ -8,18 +8,20 @@ Github:         https://github.com/codewatchorg/sidestep
 Description:    SideStep is yet another tool to bypass anti-virus software.  The tool generates Metasploit payloads encrypted using the CryptoPP library (license included), and uses several other techniques to evade AV.
 
 Software Requirements:
-Metasploit Community 4.11.1 - Update 2015031001 (or later)
+Recent release of Metasploit Framework
 Ruby 2.x
 Windows (Tested on 7, 8, and 10)
 Python 2.7.x
-Visual Studio (free editions should be fine - tested on 2012 and 2015)
+Visual Studio (free editions should be fine - tested on 2012, 2015, and 2017)
+Windows SDK
 Cygwin with strip utility (if you want to strip debug symbols)
 peCloak (if you want to use it - http://www.securitysift.com/pecloak-py-an-experiment-in-av-evasion/)
 ditto (if you want to use it - https://github.com/mubix/ditto)
 Mono (if you want to sign the executable - http://www.mono-project.com/download/)
+SigThief (if you want to add a signature from another file - https://github.com/secretsquirrel/SigThief)
 
 Configuration Requirements:
-Ruby, Python, strip.exe (if using it), and the cl.exe and lib.exe tools from Visual Studio need to be in your path.  Sorry, I tried to make it compile with mingw-gcc with no luck.
+Python and strip.exe (if using it) need to be in your path.  Sorry, I tried to make it compile with mingw-gcc with no luck.
 
 I leveraged ideas from the following projects to help develop this tool:
 - https://github.com/nccgroup/metasploitavevasion
@@ -36,6 +38,7 @@ import subprocess
 import os
 import time
 import re
+import shutil
 
 from libs import rng
 from libs import encryption
@@ -180,7 +183,17 @@ def main(argv):
       if re.search('cloaked', file):
         os.rename(os.getcwd() + path_delim + settings.exeDir + path_delim + file, os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'])
 
-  if settings.useSigncode == 1:
+  if settings.useSigThief == 1:
+    print '[-]\tStripping the signature from ' + settings.sigThiefExe + ' and applying to SideStep'
+    shutil.copy(settings.sigThiefExe, os.getcwd() + path_delim + settings.exeDir + path_delim + settings.sigThiefExeName)
+    subprocess.Popen('python ' + settings.sigThiefPath + 'sigthief.py -i .' + path_delim + settings.exeDir + path_delim + settings.sigThiefExeName + ' -t .' + path_delim + settings.exeDir + path_delim + args['exe'] + ' -o .' + path_delim + settings.exeDir + path_delim + args['exe'].split('.')[0] + '_sig.exe', stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+
+    time.sleep(5)
+    os.remove(os.getcwd() + path_delim + settings.exeDir + path_delim + settings.sigThiefExeName)
+    os.remove(os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'])
+    os.rename(os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'].split('.')[0] + '_sig.exe', os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'])
+
+  if settings.useSigncode == 1 and settings.useSigThief == 0:
   # Disabled for now as Mono doesn't support signing with SHA-256 or greater
   #  print '[-]\tSigning executable with certificate at ' + settings.certPVK
   #  subprocess.Popen(settings.signcodePath + ' -spc ' + settings.certSPC + ' -v ' + settings.certPVK + ' -a sha1 -$ commercial ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
