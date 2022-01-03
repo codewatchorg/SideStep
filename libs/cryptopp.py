@@ -20,10 +20,10 @@ def compileCryptoPP(path_delim, sourceDir, vsPath, sdkPathIncl, kitPathIncl, win
   # Loop through CryptoPP .cpp file lists and create strings for compilation
   multiple = 10
   cppFileNum = len(cryptoppSource)
-  totalLists = cppFileNum/multiple
+  totalLists = int(cppFileNum/multiple)
   remainderLists = cppFileNum-(totalLists*multiple)
 
-  for x in xrange(0, totalLists+1):
+  for x in range(0, totalLists+1):
     tmpStr = ''
 
     if x == totalLists:

